@@ -33,12 +33,13 @@ def after_request(response):
 def search():
     return_json = []
 
-    print(request.values,file=sys.stderr)
+    print(request.get_json(),file=sys.stderr)
+    
     for item in timeseries:
         return_json.append(item["target"])
 
     print(json.dumps(return_json),file=sys.stderr)
-    myResponse = Response(response=json.dumps(return_json),status=200, headers={'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'})
+    myResponse = Response(response=json.dumps(return_json),status=200, headers={'Content-Type': 'application/json'})
     return(myResponse)
     
 #	echo '[
@@ -60,7 +61,7 @@ def search():
 #,provide_automatic_options=['False']
 @app.route("/query", methods=['POST','GET'])
 def query():
-    print(request.values,file=sys.stderr)
+    print(request.get_json(),file=sys.stderr)
     json_string = """[
   {
     "target":"upper_75",
@@ -79,7 +80,7 @@ def query():
 ]"""
   
 #    json.dumps(json_obj)
-    myResponse = Response(response=json_string,status=200, headers={'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'})
+    myResponse = Response(response=json_string,status=200, headers={'Content-Type': 'application/json'})
     return(myResponse)
     
     
@@ -107,7 +108,8 @@ def hello():
     "title":"Success"
     }
 """
-    myResponse = Response(response=json_string,status=200, headers={'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'})
+#, 'Access-Control-Allow-Origin': '*'
+    myResponse = Response(response=json_string,status=200, headers={'Content-Type': 'application/json'})
     return(myResponse)
      
 if __name__ == "__main__":
